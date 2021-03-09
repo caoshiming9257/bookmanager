@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.book.mapper.UserMapper">
+
+    <resultMap id="userMap" type="com.example.book.entity.User">
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+    </resultMap>
+
+    <update id="update" parameterType="com.example.book.entity.User">
+        update user
+        set username=#{username},
+            password=#{password}
+        where username=#{username}
+    </update>
+
+    <select id="delete" parameterType="Integer">
+        delete from user where username=#{username}
+    </select>
+
+    <select id="selectUserByUsername" parameterType="string" resultType="com.example.book.entity.User">
+        select * from user where username=#{username}
+    </select>
+
+    <select id="findAll" resultType="com.example.book.entity.User">
+        select * from user
+    </select>
+
+</mapper>

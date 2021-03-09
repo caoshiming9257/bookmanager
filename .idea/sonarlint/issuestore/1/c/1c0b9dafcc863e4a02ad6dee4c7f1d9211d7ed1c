@@ -1,0 +1,8 @@
+
+U	java:S1064"9Replace this use of System.out or System.err by a logger.(€ó²ƒ8ÁÇø…/
+Q
+java:S1854"6Remove this useless assignment to local variable "sf".(ÀÇùšûÿÿÿÿ
+I
+java:S16124",Replace this lambda with a method reference.(€ó²ƒ8ÑÛø…/
+B
+java:S1481"'Remove this unused "sf" local variable.(ÀÇùšûÿÿÿÿ

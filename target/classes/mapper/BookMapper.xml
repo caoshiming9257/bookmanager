@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.book.mapper.BookMapper">
+
+    <resultMap id="bookMap" type="com.example.book.entity.Book">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="isbn" column="isbn"/>
+        <result property="categoryName" column="category_name"/>
+        <result property="author" column="author"/>
+        <result property="publisherName" column="publisher_name"/>
+        <result property="price" column="price"/>
+        <result property="location" column="location"/>
+        <result property="totalNumber" column="total_number"/>
+        <result property="leftNumber" column="left_number"/>
+        <result property="description" column="description"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.book.entity.Book">
+        insert into book (name, isbn, category_name,author, publisher_name,price,location,total_number,left_number,description)
+        values ( #{name}, #{isbn}, #{categoryName}, #{author}, #{publisherName},#{price},#{location},#{totalNumber},#{leftNumber},#{description})
+    </insert>
+
+    <update id="update" parameterType="com.example.book.entity.Book">
+      update book
+      set name=#{name},
+          isbn=#{isbn},
+          category_name=#{categoryName},
+          author=#{author},
+          publisher_name=#{publisherName},
+          price=#{price},
+          location=#{location},
+          total_number=#{totalNumber},
+          left_number=#{leftNumber},
+          description=#{description}
+      where id=#{id}
+    </update>
+
+    <select id="select" parameterType="Integer" resultMap="bookMap">
+      select * from book where id=#{id}
+    </select>
+
+    <select id="selectByIsbn" parameterType="String" resultMap="bookMap">
+      select * from book where isbn=#{isbn} limit 1
+    </select>
+
+    <select id="deletes" parameterType="Integer">
+      delete from book where id IN
+        <foreach collection="array" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="count" parameterType="Map" resultType="java.lang.Integer">
+        select count(*) from book
+        <where>
+            <if test="bookId!=null and bookId!=''">
+                and id = #{bookId}
+            </if>
+            <if test="isbn!=null and isbn!=''">
+                and isbn = #{isbn}
+            </if>
+            <if test="name!=null and name!=''">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="author!=null and author!=''">
+                and author like concat('%',#{author},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectPageResult" parameterType="map" resultType="com.example.book.entity.Book">
+        select *
+        from book
+        <where>
+            <if test="isbn!=null and isbn!=''">
+                and isbn = #{isbn}
+            </if>
+            <if test="name!=null and name!=''">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="author!=null and author!=''">
+                and author like concat('%',#{author},'%')
+            </if>
+        </where>
+        limit #{offset}, #{rows}
+    </select>
+
+    <select id="countIsbn" parameterType="com.example.book.entity.Book" resultType="java.lang.Integer">
+        select count(*) from book where isbn = #{isbn}
+        <if test="id!=null and id!=''">
+            and id != #{id}
+        </if>
+    </select>
+
+    <select id="selectById" parameterType="Integer" resultMap="bookMap">
+        select * from book where id=#{id} limit 1
+    </select>
+
+</mapper>

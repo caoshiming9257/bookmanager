@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.book.mapper.ReaderMapper">
+
+    <resultMap id="readerMap" type="com.example.book.entity.Reader">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="phone" column="phone"/>
+        <result property="fine" column="fine"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.book.entity.Reader">
+        insert into reader ( id, name, phone, fine)
+        values ( #{id}, #{name}, #{phone}, #{fine})
+    </insert>
+
+    <update id="update" parameterType="com.example.book.entity.Reader">
+        update reader
+        set name=#{name},
+            phone=#{phone},
+            fine=#{fine}
+        where id=#{id}
+    </update>
+
+    <select id="select" parameterType="Integer" resultMap="readerMap">
+        select * from reader where id=#{id}
+    </select>
+
+    <select id="deletes" parameterType="Integer">
+        delete from reader where id IN
+        <foreach collection="array" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="count"  resultType="java.lang.Integer">
+        select count(*) from reader
+        <where>
+            <if test="id!=null and id!=''">
+                and id = #{id}
+            </if>
+            <if test="readerId!=null and readerId!=''">
+                and id = #{readerId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectList" parameterType="map" resultType="com.example.book.entity.Reader">
+        select id, name, phone, fine
+        from reader
+        order by id
+    </select>
+
+    <select id="selectPageResult" parameterType="map" resultType="com.example.book.entity.Reader">
+        select id, name, phone, fine
+        from reader
+        order by id
+            limit #{offset}, #{rows}
+    </select>
+
+    <select id="countPhone" parameterType="com.example.book.entity.Reader" resultType="java.lang.Integer">
+        select count(*) from reader where phone=#{phone}
+        <if test="id!=null and id!=''">
+            and id != #{id}
+        </if>
+
+    </select>
+
+    <select id="checkFine" parameterType="Integer" resultType="java.lang.Double">
+        select fine from reader where id=#{id}
+    </select>
+
+
+</mapper>

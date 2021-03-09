@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.book.mapper.BorrowMapper">
+
+    <resultMap id="borrowMap" type="com.example.book.vo.BorrowVO">
+        <result property="id" column="id"/>
+        <result property="readerId" column="reader_id"/>
+        <result property="readerName" column="reader_name"/>
+        <result property="readerPhone" column="reader_phone"/>
+        <result property="bookId" column="book_id"/>
+        <result property="bookName" column="book_name"/>
+        <result property="bookAuthor" column="book_author"/>
+        <result property="bookCategory" column="book_category"/>
+        <result property="bookLocation" column="book_location"/>
+        <result property="bookTotal" column="book_total"/>
+        <result property="bookLeft" column="book_left"/>
+        <result property="borrowDate" column="borrow_date"/>
+        <result property="returnDate" column="return_date"/>
+        <result property="realReturnDate" column="real_return_date"/>
+        <result property="borrowDays" column="borrow_days"/>
+        <result property="reBorrowDays" column="reborrow_days"/>
+        <result property="borrowStatus" column="borrow_status"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.book.vo.BorrowVO">
+        insert into borrow (reader_id, book_id, borrow_date,return_date,borrow_days)
+        values ( #{readerId}, #{bookId}, #{borrowDate},#{returnDate}, #{borrowDays})
+    </insert>
+
+    <update id="update" parameterType="com.example.book.vo.BorrowVO">
+      update borrow
+      set reader_id=#{readerId},
+          book_id=#{bookId},
+          borrow_date=#{borrowDate},
+          return_date=#{returnDate},
+          real_return_date=#{realReturnDate},
+          borrow_days=#{borrowDays},
+          reborrow_days = #{reBorrowDays},
+          borrow_status = #{borrowStatus}
+      where id=#{id}
+    </update>
+
+    <select id="select" parameterType="Integer" resultMap="borrowMap">
+      select t1.id,
+               t1.reader_id,
+               t3.name as reader_name,
+               t3.phone as reader_phone,
+               t1.book_id,
+               t2.name as book_name,
+               t2.author as book_author,
+               t2.category_name as book_category,
+               t2.location as book_location,
+               t2.total_number as book_total,
+               t2.left_number as book_left,
+               t1.borrow_date,
+               t1.return_date,
+               t1.real_return_date,
+               t1.borrow_days,
+               t1.reborrow_days,
+               t1.borrow_status
+        from borrow t1, book t2, reader t3
+        where t1.book_id = t2.id
+        and t1.reader_id = t3.id
+        and t1.id=#{id}
+    </select>
+
+    <select id="deletes" parameterType="Integer">
+      delete from borrow where id IN
+        <foreach collection="array" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <update id="returnBook" parameterType="map">
+      update borrow
+      set real_return_date=curdate() ,
+          borrow_status = #{borrowStatus}
+      where id in
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="count" parameterType="Map" resultType="java.lang.Integer">
+        select count(*) from borrow
+        <where>
+            <if test="borrowStatus!=null">
+                and borrow_status = #{borrowStatus}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectPageResult" parameterType="map" resultMap="borrowMap">
+        select t1.id,
+               t1.reader_id,
+               t3.name as reader_name,
+               t3.phone as reader_phone,
+               t1.book_id,
+               t2.name as book_name,
+               t2.author as book_author,
+               t2.category_name as book_category,
+               t2.location as book_location,
+               t2.total_number as book_total,
+               t2.left_number as book_left,
+               t1.borrow_date,
+               t1.return_date,
+               t1.real_return_date,
+               t1.borrow_days,
+               t1.reborrow_days,
+               t1.borrow_status
+        from borrow t1, book t2, reader t3
+        where t1.book_id = t2.id
+        and t1.reader_id = t3.id
+        <if test="borrowStatus!=null">
+            and borrow_status in
+            <foreach collection="borrowStatus" item="status" index="index" open="(" close=")" separator=",">
+                #{status}
+            </foreach>
+        </if>
+        <if test="readerId!=null and readerId!=''">
+            and t1.reader_id = #{readerId}
+        </if>
+        <if test="book_id!=null and book_id!=''">
+            and t1.book_id = #{bookId}
+        </if>
+        limit #{offset}, #{rows}
+    </select>
+
+    <select id="countBorrow" parameterType="com.example.book.entity.Borrow" resultType="java.lang.Integer">
+        select count(*) from borrow where borrow_status in (0,2)
+            <if test="readerId!=null and readerId!=''">
+                and reader_id = #{readerId}
+            </if>
+            <if test="bookId!=null and bookId!=''">
+                and book_id = #{bookId}
+            </if>
+            <if test="id!=null and id!=''">
+                and id != #{id}
+            </if>
+    </select>
+
+    <select id="selectBorrowCount" resultType="java.lang.Integer">
+        select count(*) from borrow where borrow_date = #{date}
+    </select>
+
+    <select id="selectReturnCount" resultType="java.lang.Integer">
+        select count(*) from borrow where real_return_date = #{date}
+    </select>
+
+
+</mapper>

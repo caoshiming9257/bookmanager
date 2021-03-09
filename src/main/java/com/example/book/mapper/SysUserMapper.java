@@ -1,6 +1,6 @@
 package com.example.book.mapper;
 
-import com.example.book.entity.User;
+import com.example.book.entity.SysUser;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -10,17 +10,17 @@ import org.apache.ibatis.annotations.Mapper;
  * @Description: 管理员信息
  */
 @Mapper
-public interface UserMapper {
+public interface SysUserMapper{
     /**
      * 通过姓名查找用户
      * @param username
      * @return User
      */
-    User selectUserByUsername(String username);
+    SysUser selectUserByUsername(String username);
 
     /**
      * 更新用户信息
      * @param user
      */
-    void update(User user);
+    void update(SysUser user);
 }

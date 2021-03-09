@@ -1,9 +1,9 @@
 package com.example.book.controller;
 
-import com.example.book.entity.User;
+import com.example.book.entity.SysUser;
 import com.example.book.framework.Result;
 import com.example.book.framework.ResultUtil;
-import com.example.book.service.UserService;
+import com.example.book.service.SysUserService;
 import com.example.book.utils.Md5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,9 +23,9 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/user")
-public class UserController {
+public class SysUserController {
     @Autowired
-    UserService userService;
+    SysUserService userService;
 
     @PostMapping("/modifyPassword")
     public Result<String> modifyPassword(HttpServletRequest request, @RequestBody Map<String,String> param){
@@ -44,7 +44,7 @@ public class UserController {
         }
         HttpSession session = request.getSession();
         // 从session中获取用户信息
-        User loginUser = (User) session.getAttribute("loginUser");
+        SysUser loginUser = (SysUser) session.getAttribute("loginUser");
         String realPassword = loginUser.getPassword();
         if(!(Md5Util.encode(oldPassword).equals(realPassword))){
             return ResultUtil.fail("原密码输入错误！");

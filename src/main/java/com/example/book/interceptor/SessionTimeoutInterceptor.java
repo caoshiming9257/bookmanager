@@ -1,7 +1,7 @@
 package com.example.book.interceptor;
 
 
-import com.example.book.entity.User;
+import com.example.book.entity.SysUser;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ public class SessionTimeoutInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession();
         // 从session中获取用户信息
-        User loginUser = (User) session.getAttribute("loginUser");
+        SysUser loginUser = (SysUser) session.getAttribute("loginUser");
 
         // session过期
         if(loginUser == null){

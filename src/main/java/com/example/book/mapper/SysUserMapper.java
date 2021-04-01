@@ -23,4 +23,13 @@ public interface SysUserMapper{
      * @param user
      */
     void update(SysUser user);
+    
+    /** 
+      @Description: 
+      @Param: [sysUser]
+      @return: void
+      @Author: Simon_Cao
+      @Date: 2021/3/9
+     */ 
+    void insert(SysUser sysUser);
 }

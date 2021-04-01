@@ -10,6 +10,12 @@
     <link rel="stylesheet" href="/static/css/admin.css" th:href="@{/static/css/admin.css}">
     <link rel="stylesheet" href="/static/css/login.css" th:href="@{/static/css/login.css}">
     <link id="layuicss-layer" rel="stylesheet" href="/static/css/layer.css" th:href="@{/static/css/layer.css}">
+
+    <style>
+        .layui-form input[type=checkbox]{
+            display: inline;
+        }
+    </style>
 </head>
 <body>
 
@@ -19,7 +25,8 @@
         <div class="layadmin-user-login-box layadmin-user-login-header">
             <h2>图书管理系统</h2>
         </div>
-        <form class="layadmin-user-login-box layadmin-user-login-body layui-form" th:action="@{/admin}" method="post">
+        <form class="layadmin-user-login-box layadmin-user-login-body layui-form" action="/loginAdmin"  method="post">
+<!--            <input type="hidden" name="${_csrf.parameterName}"  value="${_csrf.token}" />-->
             <div class="layui-form-item">
                 <label class="layadmin-user-login-icon layui-icon layui-icon-username" for="username"></label>
                 <input type="text" name="username" id="username" lay-verify="required" placeholder="用户名" class="layui-input">
@@ -28,11 +35,16 @@
                 <label class="layadmin-user-login-icon layui-icon layui-icon-password" for="password"></label>
                 <input type="password" name="password" id="password" lay-verify="required" placeholder="密码" class="layui-input">
             </div>
+
+            <div class="layui-form-item">
+                <input type="checkbox" name="remember-me" lay-skin="primary" checked/>记住我
+            </div>
+
             <div class="layui-form-item">
                 <button class="layui-btn layui-btn-fluid" type="submit" lay-submit="" lay-filter="LAY-user-login-submit">登 入</button>
             </div>
 
-            <div class="layui-form-item" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></div>
+<!--            <div class="layui-form-item" th:if="${param.error}"></div>-->
         </form>
     </div>
 

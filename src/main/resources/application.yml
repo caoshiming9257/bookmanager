@@ -10,6 +10,7 @@ spring:
     format:
       date: yyyy-MM-dd
 
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/book?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
@@ -24,6 +25,10 @@ spring:
     servlet:
       content-type: text/html
     cache: false
+
+logging:
+  level:
+    root: info
 
 # mybatis
 mybatis:

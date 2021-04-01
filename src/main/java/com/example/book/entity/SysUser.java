@@ -25,6 +25,7 @@ public class SysUser implements UserDetails {
     private Integer id;
     private String username;
     private String password;
+    private String role;
 
     /*是否启用*/
     private boolean isenable;
@@ -39,9 +40,10 @@ public class SysUser implements UserDetails {
     private List<GrantedAuthority> getAuthorities;
 
 
-    public SysUser(String username, String password, boolean isenable, boolean islock, boolean iscredentials, boolean isexpired, List<GrantedAuthority> getAuthorities) {
+    public SysUser(String username, String password, String role, boolean isenable, boolean islock, boolean iscredentials, boolean isexpired, List<GrantedAuthority> getAuthorities) {
         this.username = username;
         this.password = password;
+        this.role = role;
         this.isenable = isenable;
         this.islock = islock;
         this.iscredentials = iscredentials;
@@ -56,21 +58,21 @@ public class SysUser implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return isexpired;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return islock;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return iscredentials;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return isenable;
+        return true;
     }
 }

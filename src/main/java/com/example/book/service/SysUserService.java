@@ -27,9 +27,9 @@ public class SysUserService implements UserDetailsService {
     @Resource
     public SysUserMapper sysUserMapper;
 
-    public SysUser selectUserByUsername(String username) {
-        return sysUserMapper.selectUserByUsername(username);
-    }
+//    public SysUser selectUserByUsername(String username) {
+//        return sysUserMapper.selectUserByUsername(username);
+//    }
 
     public void modify(SysUser user) {
         sysUserMapper.update(user);
